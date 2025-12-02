@@ -420,6 +420,11 @@ export default function App() {
     };
 
     const handleOpenGift = () => {
+        if (audioRef.current) {
+            audioRef.current.play()
+                .then(() => setIsMusicPlaying(true))
+                .catch(e => console.error("Audio play failed:", e));
+        }
         setShowConfetti(true);
         setActiveSection('wish');
         setTimeout(() => setShowConfetti(false), 4000);
