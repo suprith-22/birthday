@@ -357,6 +357,7 @@ const GeminiOracle = () => {
 export default function App() {
     const [showConfetti, setShowConfetti] = useState(false);
     const [activeSection, setActiveSection] = useState('intro');
+    const [isMusicPlaying, setIsMusicPlaying] = useState(false);
     const audioRef = React.useRef(null);
 
     useEffect(() => {
@@ -368,32 +369,55 @@ export default function App() {
         return () => document.head.removeChild(link);
     }, []);
 
-    // Initialize and auto-play audio
+    // Initialize and handle audio
     useEffect(() => {
         audioRef.current = new Audio('/soft-background-music-409193.mp3');
         audioRef.current.loop = true;
-        audioRef.current.volume = 0.3; // Hardcoded 30% volume
+        audioRef.current.volume = 0.3;
 
-        // Auto-play when page loads
         const playAudio = () => {
-            audioRef.current.play()
-                .then(() => {
-                    console.log('Background music playing');
-                })
-                .catch(err => {
-                    console.log('Auto-play blocked. Music will start on user interaction:', err);
-                });
+            if (audioRef.current.paused) {
+                audioRef.current.play()
+                    .then(() => {
+                        setIsMusicPlaying(true);
+                    })
+                    .catch(e => console.log("Audio play failed (likely autoplay policy):", e));
+            }
         };
 
-        // Try to play after a small delay
-        setTimeout(playAudio, 500);
+        // Try to play immediately
+        playAudio();
+
+        // Also try to play on first user interaction
+        const handleInteraction = () => {
+            playAudio();
+            window.removeEventListener('click', handleInteraction);
+            window.removeEventListener('keydown', handleInteraction);
+        };
+
+        window.addEventListener('click', handleInteraction);
+        window.addEventListener('keydown', handleInteraction);
 
         return () => {
             if (audioRef.current) {
                 audioRef.current.pause();
+                audioRef.current = null;
             }
+            window.removeEventListener('click', handleInteraction);
+            window.removeEventListener('keydown', handleInteraction);
         };
     }, []);
+
+    const toggleMusic = () => {
+        if (audioRef.current) {
+            if (isMusicPlaying) {
+                audioRef.current.pause();
+            } else {
+                audioRef.current.play().catch(e => console.error("Play failed:", e));
+            }
+            setIsMusicPlaying(!isMusicPlaying);
+        }
+    };
 
     const handleOpenGift = () => {
         setShowConfetti(true);
@@ -426,6 +450,12 @@ export default function App() {
                     <Sparkles className="w-6 h-6 text-yellow-200 animate-spin-slow" />
                     For Mrudula
                 </div>
+                <button
+                    onClick={toggleMusic}
+                    className="bg-white/10 backdrop-blur-md border border-white/20 p-2 rounded-full text-white hover:bg-white/20 transition-colors"
+                >
+                    {isMusicPlaying ? <Volume2 size={20} /> : <div className="relative"><Volume2 size={20} /><div className="absolute inset-0 border-t-2 border-white rotate-45 top-1/2"></div></div>}
+                </button>
             </nav>
 
             <main className="relative z-10 container mx-auto px-4 min-h-screen flex flex-col items-center justify-center py-20">
@@ -499,10 +529,10 @@ export default function App() {
                                     <Stars className="w-4 h-4 text-yellow-300" /> Special Day
                                 </div>
                                 <h2 className={`text-6xl lg:text-8xl ${THEME.fontHeading} leading-none drop-shadow-xl`}>
-                                    Happy <br/>
+                                    Happy <br />
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-pink-200 to-white">
-                    Birthday!
-                  </span>
+                                        Birthday!
+                                    </span>
                                 </h2>
                                 <h3 className="text-4xl font-light tracking-wide opacity-90">Mrudula</h3>
                             </div>
