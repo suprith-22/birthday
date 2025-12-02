@@ -371,7 +371,7 @@ export default function App() {
 
     // Initialize and handle audio
     useEffect(() => {
-        audioRef.current = new Audio('/soft-background-music-409193.mp3');
+        audioRef.current = new Audio('/happy-birthday-314197.mp3');
         audioRef.current.loop = true;
         audioRef.current.volume = 0.3;
 
@@ -470,7 +470,7 @@ export default function App() {
                     <div className="text-center space-y-12 animate-in fade-in zoom-in duration-700 flex flex-col items-center">
 
                         <div className="space-y-4">
-                            <h1 className={`relative text-7xl md:text-9xl ${THEME.fontHeading} text-transparent bg-clip-text bg-gradient-to-r from-white via-rose-100 to-white drop-shadow-md`}>
+                            <h1 className={`relative text-7xl md:text-9xl ${THEME.fontHeading} text-transparent bg-clip-text bg-gradient-to-r from-white via-rose-100 to-white drop-shadow-md pb-4`}>
                                 Hey Birthday Girl!
                             </h1>
                             <p className={`text-rose-50 text-2xl md:text-3xl font-light ${THEME.fontHeading}`}>
