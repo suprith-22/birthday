@@ -3,7 +3,7 @@ import { Heart, Gift, Stars, X, Sparkles, Cake, Flame, Feather, Wand2, Volume2, 
 
 // --- CONFIGURATION ---
 const MRUDULA_PHOTO_URL = "PHOTO-2025-11-30-22-54-38.jpg";
-const GEMINI_API_KEY = "AIzaSyCEwnBgpOaX835EKyhDImEKP84J10h1Cvc"; // Add your API key here if you want Gemini features
+const GEMINI_API_KEY = "AIzaSyAJro-QGb8UFOf8Mp1dNzcRnBPRE_FDj6c"; // Add your API key here if you want Gemini features
 
 const THEME = {
     primary: "from-rose-300 via-purple-300 to-indigo-400",
